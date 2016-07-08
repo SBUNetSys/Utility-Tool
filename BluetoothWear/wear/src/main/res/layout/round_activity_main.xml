@@ -20,4 +20,10 @@
         android:layout_height="wrap_content"
         android:text="Connect to Watch"/>
 
+    <Button
+        android:id="@+id/sendHelloBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send HelloWorld Msg"/>
+
 </RelativeLayout>

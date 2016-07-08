@@ -139,11 +139,17 @@ public class BluetoothChatService {
     public synchronized void connect(BluetoothDevice device, boolean secure) {
         Log.d(TAG, "connect to: " + device);
         // Cancel any thread attempting to make a connection
-        if (mState == STATE_CONNECTING) {
-            if (mConnectThread != null) {
-                mConnectThread.cancel();
-                mConnectThread = null;
-            }
+//        if (mState == STATE_CONNECTING) {
+//            if (mConnectThread != null) {
+//                mConnectThread.cancel();
+//                mConnectThread = null;
+//            }
+//        }
+
+        // Cancel ConnectThread anyway
+        if (mConnectThread != null) {
+            mConnectThread.cancel();
+            mConnectThread = null;
         }
 
         // Cancel any thread currently running a connection
@@ -243,7 +249,10 @@ public class BluetoothChatService {
         ConnectedThread r;
         // Synchronize a copy of the ConnectedThread
         synchronized (this) {
-            if (mState != STATE_CONNECTED) return;
+            if (mState != STATE_CONNECTED) {
+                Log.w(TAG, "Write() failed, as the state is not connected yet.");
+                return;
+            }
             r = mConnectedThread;
         }
         // Perform the write unsynchronized

@@ -161,12 +161,27 @@ public class MainActivity extends AppCompatActivity {
     private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            //Log.d(TAG, "Received message: " + msg.what);
             try {
                 switch (msg.what) {
+                    case Constants.MESSAGE_STATE_CHANGE:
+                        switch (msg.arg1) {
+                            case BluetoothChatService.STATE_CONNECTED:
+                                Log.i(TAG, "Connected.");
+                                break;
+                            case BluetoothChatService.STATE_CONNECTING:
+                                Log.i(TAG, "Connecting....");
+                                break;
+                            case BluetoothChatService.STATE_LISTEN:
+                            case BluetoothChatService.STATE_NONE:
+                                Log.i(TAG, "Not connected");
+                                break;
+                        }
+                        break;
+
                     case Constants.MESSAGE_READ:
                         byte[] readBuf = (byte[]) msg.obj;
-                        String readStr = new String(readBuf);
+                        String readStr = new String(readBuf, 0, msg.arg1);
+
                         Log.i(TAG, "For script: received timestamp= " + System.currentTimeMillis());
                         Log.i(TAG, "Received packet, " + readStr);
                         break;
@@ -174,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
                         byte[] writeBuf = (byte[]) msg.obj;
                         String sentStr = new String(writeBuf);
                         Log.i(TAG, "Sent packet, " + sentStr);
-                        Log.i(TAG, "For script: sent packet size= " + writeBuf.length
+                        Log.i(TAG, "For script: sent packet size= " + sentStr.length()
                                     + " ,timestamp= " + System.currentTimeMillis());
                         break;
                 }
@@ -183,6 +198,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+
 
     private void sendMessage(String message) {
         if (mBluetoothService.getState() != BluetoothChatService.STATE_CONNECTED) {

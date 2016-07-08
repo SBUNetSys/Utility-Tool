@@ -23,8 +23,8 @@ public class MainActivity extends Activity {
     private BluetoothChatService mBluetoothService;
 
     private TextView mTextView;
-    Button mConnectBtn;
-
+    private Button mConnectBtn;
+    private Button mSendBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,13 +36,22 @@ public class MainActivity extends Activity {
             public void onLayoutInflated(WatchViewStub stub) {
                 mTextView = (TextView) stub.findViewById(R.id.text);
                 mConnectBtn = (Button) stub.findViewById(R.id.connectBtn);
-                if (mConnectBtn == null)
+                if (mConnectBtn == null) {
                     Log.e(TAG, "Button is NULL!!");
-
+                    return;
+                }
                 mConnectBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         connectDevice("02:00:00:00:00:00");
+                    }
+                });
+
+                mSendBtn = (Button) stub.findViewById(R.id.sendHelloBtn);
+                mSendBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        sendMsg("Hello World!! I'm sending from Smartwatch");
                     }
                 });
             }
@@ -50,6 +59,7 @@ public class MainActivity extends Activity {
         });
         stub.setKeepScreenOn(true);
 
+        // start the BluetoothChatService
         mBluetoothService = new BluetoothChatService(this, mHandler);
         mBluetoothService.start();
 
@@ -75,15 +85,29 @@ public class MainActivity extends Activity {
     private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
-            Log.d(TAG, "Received message: " + msg.what);
             try {
                 switch (msg.what) {
+                    case Constants.MESSAGE_STATE_CHANGE:
+                        switch (msg.arg1) {
+                            case BluetoothChatService.STATE_CONNECTED:
+                                Log.i(TAG, "Connected.");
+                                break;
+                            case BluetoothChatService.STATE_CONNECTING:
+                                Log.i(TAG, "Connecting....");
+                                break;
+                            case BluetoothChatService.STATE_LISTEN:
+                            case BluetoothChatService.STATE_NONE:
+                                Log.i(TAG, "Not connected");
+                                break;
+                        }
+                        break;
+
                     case Constants.MESSAGE_READ:
                         byte[] readBuf = (byte[]) msg.obj;
-                        String readStr = new String(readBuf);
+                        String readStr = new String(readBuf, 0, msg.arg1);
 
                         Log.i(TAG, "Received packet, " + readStr);
-                        Log.i(TAG, "For script: received packet size= " + readBuf.length
+                        Log.i(TAG, "For script: received packet size= " + readStr.length()
                                 + " ,timestamp= " + System.currentTimeMillis());
                         sendMsg(readStr);
                         break;
