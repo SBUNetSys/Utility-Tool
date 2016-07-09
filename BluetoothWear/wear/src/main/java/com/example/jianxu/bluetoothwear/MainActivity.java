@@ -106,7 +106,7 @@ public class MainActivity extends Activity {
                         byte[] readBuf = (byte[]) msg.obj;
                         String readStr = new String(readBuf, 0, msg.arg1);
 
-                        Log.i(TAG, "Received packet, " + readStr);
+                        //Log.i(TAG, "Received packet, " + readStr);
                         Log.i(TAG, "For script: received packet size= " + readStr.length()
                                 + " ,timestamp= " + System.currentTimeMillis());
                         sendMsg(readStr);
@@ -114,7 +114,7 @@ public class MainActivity extends Activity {
                     case Constants.MESSAGE_WRITE:
                         byte[] writeBuf = (byte[]) msg.obj;
                         String sentStr = new String(writeBuf);
-                        Log.i(TAG, "Sent packet, " + sentStr);
+                        //Log.i(TAG, "Sent packet, " + sentStr);
                         break;
                 }
             } catch (Exception e) {

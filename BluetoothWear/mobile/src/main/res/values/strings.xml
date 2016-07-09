@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">BluetoothWear</string>
+
+    <string name="amount_hint">Data Size: </string>
+    <string name="packet_hint">Packet Number: </string>
+
 </resources>

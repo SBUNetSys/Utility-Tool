@@ -2,6 +2,7 @@ package com.example.jianxu.bluetoothwear;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -9,11 +10,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.Arrays;
 import java.util.Set;
 import com.example.jianxu.commonlib.BluetoothChatService;
 import com.example.jianxu.commonlib.Constants;
+import com.google.android.gms.wearable.DataMap;
 
 public class MainActivity extends AppCompatActivity {
     public final String TAG = "MainActivity";
@@ -55,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             Log.i(TAG, "No devices have been paired yet.");
         }
 
-        Button connectBtn = (Button)findViewById(R.id.connectWatch);
+        Button connectBtn = (Button) findViewById(R.id.connectWatch);
         connectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button sendBtn = (Button)findViewById(R.id.sendMsg);
+        Button sendBtn = (Button) findViewById(R.id.sendMsg);
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,88 +77,47 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Sending 1KB data
-        Button send1KBtn = (Button)findViewById(R.id.send1KB);
+        Button send1KBtn = (Button) findViewById(R.id.send1KB);
         send1KBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Should fillin 1K/2 chars
                 int length = 1024;
-                String sendStr = new String("");
-                for (int i = 0; i < length; ++i) {
-                    sendStr += "a";
-                }
+                String sendStr = constructKBMsg(length);
                 sendMessage(sendStr);
             }
         });
 
         // Sending 5KB data
-        Button send5KBtn = (Button)findViewById(R.id.send5KB);
+        Button send5KBtn = (Button) findViewById(R.id.send5KB);
         send5KBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int length = 5*1024;
-                String sendStr = new String("");
-                for (int i = 0; i < 1024; ++i) {
-                    sendStr += "a";
-                }
-                for (int i = 0; i < 1024; ++i) {
-                    sendStr += "b";
-                }
-                for (int i = 0; i < 1024; ++i) {
-                    sendStr += "c";
-                }
-                for (int i = 0; i < 1024; ++i) {
-                    sendStr += "d";
-                }
-                for (int i = 0; i < 1024; ++i) {
-                    sendStr += "e";
-                }
+                int length = 5 * 1024;
+                String sendStr = constructKBMsg(length);
                 sendMessage(sendStr);
             }
         });
 
         // Sending 10KB data
-        Button send10KBtn = (Button)findViewById(R.id.send10KB);
+        Button send10KBtn = (Button) findViewById(R.id.send10KB);
         send10KBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int length = 10*1024;
-                String sendStr = new String("");
-                for (int i = 0; i < 1024; ++i) {
-                    sendStr += "a";
-                }
-                for (int i = 0; i < 1024; ++i) {
-                    sendStr += "b";
-                }
-                for (int i = 0; i < 1024; ++i) {
-                    sendStr += "c";
-                }
-                for (int i = 0; i < 1024; ++i) {
-                    sendStr += "d";
-                }
-                for (int i = 0; i < 1024; ++i) {
-                    sendStr += "e";
-                }
-                for (int i = 0; i < 1024; ++i) {
-                    sendStr += "a";
-                }
-                for (int i = 0; i < 1024; ++i) {
-                    sendStr += "b";
-                }
-                for (int i = 0; i < 1024; ++i) {
-                    sendStr += "c";
-                }
-                for (int i = 0; i < 1024; ++i) {
-                    sendStr += "d";
-                }
-                for (int i = 0; i < 1024; ++i) {
-                    sendStr += "e";
-                }
-
+                int length = 10 * 1024;
+                String sendStr = constructKBMsg(length);
                 sendMessage(sendStr);
             }
         });
 
+
+        Button sendBatch = (Button) findViewById(R.id.sendMsgBatch);
+        sendBatch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new PacketSendTask().execute("abc");
+            }
+        });
     }
 
 
@@ -183,14 +146,14 @@ public class MainActivity extends AppCompatActivity {
                         String readStr = new String(readBuf, 0, msg.arg1);
 
                         Log.i(TAG, "For script: received timestamp= " + System.currentTimeMillis());
-                        Log.i(TAG, "Received packet, " + readStr);
+                        //Log.i(TAG, "Received packet, " + readStr);
                         break;
                     case Constants.MESSAGE_WRITE:
                         byte[] writeBuf = (byte[]) msg.obj;
                         String sentStr = new String(writeBuf);
-                        Log.i(TAG, "Sent packet, " + sentStr);
+                        //Log.i(TAG, "Sent packet, " + sentStr);
                         Log.i(TAG, "For script: sent packet size= " + sentStr.length()
-                                    + " ,timestamp= " + System.currentTimeMillis());
+                                + " ,timestamp= " + System.currentTimeMillis());
                         break;
                 }
             } catch (Exception e) {
@@ -219,5 +182,49 @@ public class MainActivity extends AppCompatActivity {
     private void connectDevice(String addr) {
         BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(addr);
         mBluetoothService.connect(device, false);
+    }
+
+    private String constructKBMsg(int size) {
+        char[] array = new char[size];
+        Arrays.fill(array, 'a');
+        String msg = new String(array);
+        return msg;
+    }
+
+
+    private class PacketSendTask extends AsyncTask<String, Integer, Long> {
+        private int mDataSize;
+        private int mPacketNum;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            try {
+                EditText sizeText = (EditText) findViewById(R.id.packetSize);
+                mDataSize = Integer.parseInt(sizeText.getText().toString());
+                EditText numText = (EditText) findViewById(R.id.packetNum);
+                mPacketNum = Integer.parseInt(numText.getText().toString());
+            } catch (Exception e) {
+                Log.w(TAG, "Invalid empty input");
+                return;
+            }
+        }
+
+        @Override
+        protected Long doInBackground(String... params) {
+            // TODO: this implementation of multi-thread sending,
+            // TODO: which might make opponent unable to process packet
+
+            String msg = constructKBMsg(mDataSize);
+            try {
+                for (int i = 0; i < mPacketNum; ++i) {
+                    Thread.sleep(5000);
+                    sendMessage(msg);
+                }
+            } catch(Exception e) {
+                Log.w(TAG, "Exception occurred.." + e.toString());
+            }
+            return null;
+        }
     }
 }

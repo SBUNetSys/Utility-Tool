@@ -45,4 +45,24 @@
         android:layout_height="wrap_content"
         android:text="Send 10 KB"/>
 
+    <EditText
+        android:id="@+id/packetSize"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/amount_hint"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/packetNum"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/packet_hint"
+        android:inputType="number" />
+
+    <Button
+        android:id="@+id/sendMsgBatch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send Message in Batch"/>
+
 </LinearLayout>
