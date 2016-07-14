@@ -33,17 +33,6 @@
         android:layout_height="wrap_content"
         android:text="Send 1 KB"/>
 
-    <Button
-        android:id="@+id/send5KB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Send 5 KB"/>
-
-    <Button
-        android:id="@+id/send10KB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Send 10 KB"/>
 
     <EditText
         android:id="@+id/packetSize"

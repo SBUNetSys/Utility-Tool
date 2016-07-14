@@ -88,27 +88,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Sending 5KB data
-        Button send5KBtn = (Button) findViewById(R.id.send5KB);
-        send5KBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int length = 5 * 1024;
-                String sendStr = constructKBMsg(length);
-                sendMessage(sendStr);
-            }
-        });
-
-        // Sending 10KB data
-        Button send10KBtn = (Button) findViewById(R.id.send10KB);
-        send10KBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int length = 10 * 1024;
-                String sendStr = constructKBMsg(length);
-                sendMessage(sendStr);
-            }
-        });
 
 
         Button sendBatch = (Button) findViewById(R.id.sendMsgBatch);
