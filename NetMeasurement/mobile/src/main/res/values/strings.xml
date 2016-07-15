@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">NetMeasurement</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="notify">Send Msg</string>
+    <string name="amount_hint">Data Size: </string>
+    <string name="interval_hint">Packet Interval(ms): </string>
+    <string name="packet_hint">Packet Number: </string>
+</resources>
