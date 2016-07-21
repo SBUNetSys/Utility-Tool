@@ -22,6 +22,8 @@ public class MainActivity extends Activity {
     private BluetoothAdapter mBluetoothAdapter;
     private BluetoothChatService mBluetoothService;
 
+    private OnDataReceivedListener mDataReceivedListener = null;
+
     private TextView mTextView;
     private Button mConnectBtn;
     private Button mSendBtn;
@@ -68,6 +70,8 @@ public class MainActivity extends Activity {
             Log.w(TAG, "Default Bluetooth Adapter is null.");
         }
 
+        mDataReceivedListener = new OnDataReceivedListener();
+
         Log.i(TAG, "Default Bluetooth Adapter is set");
         if (mBluetoothAdapter.isEnabled()) {
             Log.i(TAG, "Bluetooth is enabled");
@@ -106,7 +110,8 @@ public class MainActivity extends Activity {
                         byte[] readBuf = (byte[]) msg.obj;
                         String readStr = new String(readBuf, 0, msg.arg1);
 
-                        //Log.i(TAG, "Received packet, " + readStr);
+                        mDataReceivedListener.onDataReceived(readStr);
+                        Log.i(TAG, "Received packet, " + readStr);
                         Log.i(TAG, "For script: received packet size= " + readStr.length()
                                 + " ,timestamp= " + System.currentTimeMillis());
                         sendMsg(readStr);
@@ -144,4 +149,10 @@ public class MainActivity extends Activity {
         mBluetoothService.connect(device, false);
     }
 
+    private class OnDataReceivedListener {
+        void onDataReceived(String message) {
+            Log.i(TAG, "onDataReceived: " + message.length());
+            //Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+        }
+    }
 }

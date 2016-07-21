@@ -139,17 +139,11 @@ public class BluetoothChatService {
     public synchronized void connect(BluetoothDevice device, boolean secure) {
         Log.d(TAG, "connect to: " + device);
         // Cancel any thread attempting to make a connection
-//        if (mState == STATE_CONNECTING) {
-//            if (mConnectThread != null) {
-//                mConnectThread.cancel();
-//                mConnectThread = null;
-//            }
-//        }
-
-        // Cancel ConnectThread anyway
-        if (mConnectThread != null) {
-            mConnectThread.cancel();
-            mConnectThread = null;
+        if (mState == STATE_CONNECTING) {
+            if (mConnectThread != null) {
+                mConnectThread.cancel();
+                mConnectThread = null;
+            }
         }
 
         // Cancel any thread currently running a connection
@@ -476,18 +470,22 @@ public class BluetoothChatService {
 
         public void run() {
             Log.i(TAG, "BEGIN mConnectedThread");
-            byte[] buffer = new byte[1024];
-            int bytes;
-
+            byte[] buffer = new byte[5024];
+            int bytes = 0;
+            Log.d(TAG, "buffer capacity:" + buffer.length);
             // Keep listening to the InputStream while connected
             while (mState == STATE_CONNECTED) {
                 try {
                     // Read from the InputStream
-                    bytes = mmInStream.read(buffer);
-
+                    bytes += mmInStream.read(buffer, bytes, buffer.length - bytes);
+                    Log.i(TAG, "Read " + bytes + " bytes from the other side");
                     // Send the obtained bytes to the UI Activity
-                    mHandler.obtainMessage(Constants.MESSAGE_READ, bytes, -1, buffer)
-                            .sendToTarget();
+                    if (buffer[bytes-1] == '#') {    // '#' indicate the end of the message
+                        mHandler.obtainMessage(Constants.MESSAGE_READ, bytes - 1, -1, buffer)
+                                .sendToTarget();
+                        bytes = 0;
+                    }
+
                 } catch (IOException e) {
                     Log.e(TAG, "disconnected", e);
                     connectionLost();
