@@ -503,10 +503,15 @@ public class BluetoothChatService {
          */
         public void write(byte[] buffer) {
             try {
-                mmOutStream.write(buffer);
+                byte [] sendData = new byte[buffer.length + 1];
+                byte [] endData = new byte[1];
+                endData[0] = '#';
+                System.arraycopy(buffer, 0, sendData, 0, buffer.length);
+                System.arraycopy(endData, 0, sendData, buffer.length, endData.length);
+                mmOutStream.write(sendData);
 
                 // Share the sent message back to the UI Activity
-                mHandler.obtainMessage(Constants.MESSAGE_WRITE, -1, -1, buffer)
+                mHandler.obtainMessage(Constants.MESSAGE_WRITE, -1, -1, sendData)
                         .sendToTarget();
             } catch (IOException e) {
                 Log.e(TAG, "Exception during write", e);

@@ -146,7 +146,6 @@ public class MainActivity extends AppCompatActivity {
         if (mBluetoothService.getState() != BluetoothChatService.STATE_CONNECTED) {
             Toast.makeText(this, "You are not connected to a device", Toast.LENGTH_SHORT).show();
         }
-        message += "#";
         try {
             if (message.length() > 0) {
                 byte[] send = message.getBytes();
