@@ -1,7 +1,7 @@
 package com.example.jianxu.netmeasurement;
 
+import android.app.Activity;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -16,7 +16,7 @@ import com.google.android.gms.wearable.DataMap;
 import com.google.android.gms.wearable.Wearable;
 
 
-public class MainActivity extends ActionBarActivity
+public class MainActivity extends Activity
         implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
