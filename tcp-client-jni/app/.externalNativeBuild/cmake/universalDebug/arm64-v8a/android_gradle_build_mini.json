@@ -1,0 +1,16 @@
+{
+  "buildFiles": [
+    "/Users/jianxu/workspace/ubicomp/android-ndk/hello-jni/app/src/main/cpp/CMakeLists.txt"
+  ],
+  "cleanCommands": [
+    "/Users/jianxu/Library/Android/sdk/cmake/3.6.4111459/bin/cmake --build /Users/jianxu/workspace/ubicomp/android-ndk/hello-jni/app/.externalNativeBuild/cmake/universalDebug/arm64-v8a --target clean"
+  ],
+  "libraries": {
+    "hello-jni-Debug-arm64-v8a": {
+      "artifactName": "hello-jni",
+      "buildCommand": "/Users/jianxu/Library/Android/sdk/cmake/3.6.4111459/bin/cmake --build /Users/jianxu/workspace/ubicomp/android-ndk/hello-jni/app/.externalNativeBuild/cmake/universalDebug/arm64-v8a --target hello-jni",
+      "abi": "arm64-v8a",
+      "output": "/Users/jianxu/workspace/ubicomp/android-ndk/hello-jni/app/build/intermediates/cmake/universal/debug/obj/arm64-v8a/libhello-jni.so"
+    }
+  }
+}
