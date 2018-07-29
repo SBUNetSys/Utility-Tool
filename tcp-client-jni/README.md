@@ -1,13 +1,19 @@
-Hello JNI
+TCP Client JNI
 =========
-Hello JNI is an Android sample that uses JNI to call C code from a Android Java Activity.
+This is an Android sample that uses JNI to call C code to initialize a TCP client.
 
 This sample uses the new [Android Studio CMake plugin](http://tools.android.com/tech-docs/external-c-builds) with C++ support.
 For how to use Android Studio, refer to [Hello-CMake codelab](https://codelabs.developers.google.com/codelabs/android-studio-cmake/index.html)
 
+Debugging
+--------------
+- server.cpp
+  Helps you to initiate a server to echo things back to the app.
+
+
 Pre-requisites
 --------------
-- Android Studio 2.2+ with [NDK](https://developer.android.com/ndk/) bundle.
+- Android Studio 3.0+ with [NDK](https://developer.android.com/ndk/) bundle.
 
 Getting Started
 ---------------
@@ -18,21 +24,6 @@ Getting Started
   - Click *Download* or *Select NDK location*.
 1. Click *Tools/Android/Sync Project with Gradle Files*.
 1. Click *Run/Run 'app'*.
-
-Screenshots
------------
-![screenshot](screenshot.png)
-
-Support
--------
-If you've found an error in these samples, please [file an issue](https://github.com/googlesamples/android-ndk/issues/new).
-
-Patches are encouraged, and may be submitted by [forking this project](https://github.com/googlesamples/android-ndk/fork) and
-submitting a pull request through GitHub. Please see [CONTRIBUTING.md](../CONTRIBUTING.md) for more details.
-
-- [Stack Overflow](http://stackoverflow.com/questions/tagged/android-ndk)
-- [Google+ Community](https://plus.google.com/communities/105153134372062985968)
-- [Android Tools Feedbacks](http://tools.android.com/feedback)
 
 License
 -------
